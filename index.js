@@ -2,10 +2,10 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 
-app.use('/places', require('./controllers/places')
-})
+app.use('/places', require('./controllers/places'))
 
 app.get('/', (req, res) => {
+    console.log('Server is live')
     res.send('hello world')
 })
 
