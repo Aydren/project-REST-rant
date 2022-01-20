@@ -1,18 +1,46 @@
-const router = require('express').Router()
-const places = require('../models/places.js')
+const router = require('express').Router();
+const places = require('../models/places');
 
+//GET /places
 router.get('/', (req, res) => {
-    res.render('places/index', { places })
+  res.render('places/index', { places });
 })
 
-// More code ...
+router.get('/:id/edit', (req, res) => {
+  let id = Number(req.params.id)
+  if (isNaN(id)) {
+      res.render('error404')
+  }
+  else if (!places[id]) {
+      res.render('error404')
+  }
+  else {
+    res.render('places/edit', { place: places[id] })
+  }
+})
 
+//NEW
 router.get('/new', (req, res) => {
-  res.render('places/new')
+  res.render('places/new');
 })
 
+//SHOW
+router.get('/:id', (req, res) => {
+  let id = Number(req.params.id)
+  if (isNaN(id)) {
+    res.render('error404')
+  }
+  else if (!places[id]) {
+    res.render('error404')
+  }
+  else {
+    res.render('places/show', { place: places[id], id })
+  }
+})
+
+//CREATE
 router.post('/', (req, res) => {
-  console.log(req.body)
+  console.log(req.body);
   if (!req.body.pic) {
     // Default image if one is not provided
     req.body.pic = 'http://placekitten.com/400/400'
@@ -23,12 +51,14 @@ router.post('/', (req, res) => {
   if (!req.body.state) {
     req.body.state = 'USA'
   }
-  places.push(req.body)
-  res.redirect('/places')
+  places.push(req.body);
+  res.redirect('/places');
 })
 
-router.get('/:id', (req, res) => {
+//DELETE
+router.delete('/:id', (req, res) => {
   let id = Number(req.params.id)
+  console.log(id)
   if (isNaN(id)) {
     res.render('error404')
   }
@@ -36,8 +66,13 @@ router.get('/:id', (req, res) => {
     res.render('error404')
   }
   else {
-    res.render('places/show', { place: places[id] })
+    places.splice(id, 1)
+    res.redirect('/places')
   }
+})
+//Catch all
+router.post('*', (req, res) => {
+  console.log(req.params)
 })
 
 module.exports = router
