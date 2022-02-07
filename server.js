@@ -1,8 +1,8 @@
 // Modules and Globals
-require('dotenv').config()
 const express = require('express')
 const methodOverride = require('method-override')
 const app = express()
+require('dotenv').config()
 
 // Express Settings
 app.set('views', __dirname + '/views')
@@ -24,4 +24,4 @@ app.get('*', (req, res) => {
 })
 
 // Listen for Connections
-app.listen(process.env.PORT || 3000)
+app.listen(process.env.PORT)
